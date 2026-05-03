@@ -1,63 +1,99 @@
+/* ===== 성 지키기 — 중세 성 테마 =====
+   팔레트:
+   - 배경(밤하늘 돌담): #1a1714 / #2a2620
+   - 양피지/뼈색 텍스트: #e8d8b8
+   - 청동 테두리: #8b6f47
+   - 금 (제목/강조): #d4af37
+   - 진홍 깃발 (위험/패배): #a8324a
+   - 횃불 그라데이션: #c84a1f → #e09a3a → #ffd166
+*/
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #1a1a2e;
+  background: #1a1714;
   overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
+  font-family: 'Cinzel', 'Trajan Pro', 'Segoe UI', serif;
+  color: #e8d8b8;
 }
 #game {
   display: block;
   margin: 0 auto;
-  background: #16213e;
+  background:
+    radial-gradient(circle at 50% 50%, #3a3228 0%, #2a2620 60%, #1f1c17 100%);
 }
+
+/* ===== 상단 HUD ===== */
 #hud {
   position: fixed;
   top: 0; left: 0; right: 0;
-  padding: 12px 20px;
+  padding: 14px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
   font-size: 16px;
+  letter-spacing: 0.5px;
 }
 #hp-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  font-weight: bold;
+  color: #d4af37;
+  text-shadow: 0 1px 2px #000;
 }
 #hp-bar {
-  width: 220px;
-  height: 18px;
-  background: #333;
-  border: 2px solid #fff;
-  border-radius: 4px;
+  width: 240px;
+  height: 20px;
+  background: #1a1410;
+  border: 2px solid #8b6f47;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px #4a3a28,
+    0 0 0 1px #2a1f14,
+    0 2px 4px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+  position: relative;
 }
 #hp-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00d26a, #7be88a);
+  background: linear-gradient(90deg, #c84a1f 0%, #e09a3a 50%, #ffd166 100%);
+  box-shadow: inset 0 0 8px rgba(255, 209, 102, 0.5);
   transition: width 0.15s linear;
+}
+#hp-text {
+  color: #e8d8b8;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px #000;
 }
 #stats {
   text-align: right;
-  line-height: 1.4;
+  line-height: 1.5;
+  text-shadow: 0 1px 2px #000;
 }
 #level-badge {
-  color: #ffd166;
+  color: #d4af37;
   font-weight: bold;
+  letter-spacing: 1px;
 }
-/* 성 상태 패널 (좌측 하단) */
+
+/* ===== 성주의 보고 패널 (좌측 하단) ===== */
 #status-panel {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
-  width: 220px;
-  padding: 14px 16px;
-  background: rgba(31, 39, 70, 0.85);
-  border: 2px solid #4a90e2;
-  border-radius: 8px;
+  left: 22px;
+  bottom: 22px;
+  width: 230px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(160deg, rgba(50, 40, 28, 0.95), rgba(35, 28, 20, 0.95));
+  border: 2px solid #8b6f47;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 1px #4a3a28,
+    inset 0 1px 0 rgba(255, 220, 170, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.6);
   font-size: 13px;
   pointer-events: none;
   backdrop-filter: blur(2px);
@@ -65,100 +101,131 @@ html, body {
 .status-title {
   font-size: 14px;
   font-weight: bold;
-  color: #ffd166;
+  color: #d4af37;
   margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  letter-spacing: 1px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #8b6f47;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 1px 2px #000;
 }
 .status-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3px 0;
-  color: #c8d4f0;
+  padding: 4px 0;
+  color: #c8b89a;
 }
 .status-row span:last-child {
-  color: #fff;
+  color: #e8d8b8;
   font-weight: bold;
+  font-variant-numeric: tabular-nums;
 }
 .status-row.total {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  color: #ffd166;
+  border-top: 1px solid #8b6f47;
+  color: #d4af37;
 }
 .status-row.total span:last-child {
   color: #ffd166;
   font-size: 15px;
+  text-shadow: 0 0 8px rgba(255, 209, 102, 0.4);
 }
 
+/* ===== 게임 오버 (성 함락) ===== */
 #overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(168, 50, 74, 0.25) 0%, rgba(0, 0, 0, 0.85) 60%);
   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   z-index: 10;
 }
 #overlay.show { display: flex; }
 #overlay h1 {
   font-size: 56px;
   margin: 0;
-  color: #ff5470;
-  letter-spacing: 4px;
+  color: #a8324a;
+  letter-spacing: 8px;
+  text-shadow:
+    0 0 20px rgba(168, 50, 74, 0.6),
+    0 2px 0 #000,
+    0 4px 12px #000;
 }
 #overlay p {
   margin: 0;
   font-size: 20px;
+  color: #e8d8b8;
+  text-shadow: 0 1px 2px #000;
 }
 #restart {
-  margin-top: 12px;
-  padding: 12px 28px;
+  margin-top: 16px;
+  padding: 14px 32px;
   font-size: 18px;
-  background: #00d26a;
-  color: #000;
-  border: none;
-  border-radius: 6px;
+  font-family: inherit;
+  background: linear-gradient(180deg, #d4af37, #8b6f47);
+  color: #1a1410;
+  border: 2px solid #5a4628;
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 170, 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   font-weight: bold;
+  letter-spacing: 3px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
-#restart:hover { background: #7be88a; }
+#restart:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 170, 0.5),
+    0 6px 14px rgba(212, 175, 55, 0.4);
+}
 
-/* 카드 선택 화면 */
+/* ===== 카드 선택 (성이 강해진다) ===== */
 #card-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, rgba(0, 0, 0, 0.78) 60%);
   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 32px;
   z-index: 20;
 }
 #card-overlay.show { display: flex; }
 #card-overlay h2 {
   font-size: 44px;
   margin: 0;
-  color: #ffd166;
-  letter-spacing: 6px;
-  text-shadow: 0 0 20px rgba(255, 209, 102, 0.6);
+  color: #d4af37;
+  letter-spacing: 10px;
+  text-shadow:
+    0 0 24px rgba(255, 209, 102, 0.6),
+    0 2px 0 #000;
 }
 #cards {
   display: flex;
-  gap: 24px;
+  gap: 26px;
 }
 .card {
-  width: 200px;
-  min-height: 280px;
-  background: #1f2746;
-  border: 3px solid #4a90e2;
-  border-radius: 12px;
-  padding: 20px;
+  width: 210px;
+  min-height: 290px;
+  background:
+    linear-gradient(160deg, #3a2e1f 0%, #2a2218 100%);
+  border: 3px solid #8b6f47;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 1px #5a4628,
+    inset 0 1px 0 rgba(255, 220, 170, 0.1),
+    0 6px 16px rgba(0, 0, 0, 0.6);
+  padding: 22px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -168,46 +235,61 @@ html, body {
   user-select: none;
 }
 .card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.5);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    inset 0 0 0 1px #d4af37,
+    inset 0 1px 0 rgba(255, 220, 170, 0.2),
+    0 14px 30px rgba(212, 175, 55, 0.45);
 }
 .card.rare {
-  border-color: #c264ff;
-  background: linear-gradient(160deg, #2a1f4a, #1f2746);
+  border-color: #a8324a;
+  background:
+    linear-gradient(160deg, #4a1f2a 0%, #2a1820 100%);
 }
 .card.rare:hover {
-  box-shadow: 0 10px 30px rgba(194, 100, 255, 0.6);
+  box-shadow:
+    inset 0 0 0 1px #ffb0c0,
+    inset 0 1px 0 rgba(255, 220, 170, 0.2),
+    0 14px 30px rgba(168, 50, 74, 0.6);
 }
 .card-icon {
   font-size: 60px;
   margin: 8px 0 14px;
+  filter: drop-shadow(0 2px 4px #000);
 }
 .card-name {
   font-size: 20px;
   font-weight: bold;
+  color: #d4af37;
   margin-bottom: 10px;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 2px #000;
 }
 .card-desc {
   font-size: 14px;
-  color: #c8d4f0;
-  line-height: 1.5;
+  color: #c8b89a;
+  line-height: 1.55;
   flex-grow: 1;
 }
 .card-rarity {
-  font-size: 12px;
-  margin-top: 12px;
-  padding: 4px 10px;
-  border-radius: 10px;
-  background: #4a90e2;
-  color: #000;
+  font-size: 11px;
+  margin-top: 14px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #d4af37, #8b6f47);
+  color: #1a1410;
+  border: 1px solid #5a4628;
   font-weight: bold;
+  letter-spacing: 2px;
 }
 .card.rare .card-rarity {
-  background: #c264ff;
-  color: #fff;
+  background: linear-gradient(180deg, #a8324a, #6a1f2e);
+  color: #ffe0d0;
+  border-color: #4a1620;
 }
 .card-key {
   font-size: 11px;
-  color: #88a;
-  margin-top: 8px;
+  color: #8b7a5a;
+  margin-top: 10px;
+  letter-spacing: 1px;
 }

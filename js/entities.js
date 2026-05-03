@@ -151,6 +151,123 @@ Game.updateProjectiles = function(state, dt) {
 };
 
 // ---------- 렌더 ----------
+// 성 실루엣 (좌·우 망루 + 중앙 성벽 + 흉벽 + 정문 + 깃발)
+Game.drawCastle = function(ctx, cx, cy, r) {
+  const stone   = '#6b6256';
+  const stoneHi = '#857a6a';
+  const stoneSh = '#3a342a';
+  const flagRed = '#a8324a';
+  const flagShd = '#5a1828';
+  const gold    = '#d4af37';
+
+  // 바닥 그림자
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + r * 0.92, r * 0.95, r * 0.18, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = stoneSh;
+  ctx.lineWidth = 1;
+
+  // 망루 한 좌(또는 우) 한 쌍 그리기
+  const towerW = r * 0.42;
+  const towerH = r * 1.55;
+  const towerTopY = cy - r * 0.78;
+  const merlonH = r * 0.20;
+
+  const drawTower = (left) => {
+    // 본체
+    ctx.fillStyle = stone;
+    ctx.fillRect(left, towerTopY, towerW, towerH);
+    // 좌측 하이라이트 띠
+    ctx.fillStyle = stoneHi;
+    ctx.fillRect(left, towerTopY, towerW * 0.32, towerH);
+    ctx.strokeRect(left + 0.5, towerTopY + 0.5, towerW - 1, towerH - 1);
+    // 흉벽 3개
+    ctx.fillStyle = stone;
+    const mW = towerW / 5;
+    for (let i = 0; i < 3; i++) {
+      const mx = left + mW * (i * 2 + 0.3);
+      ctx.fillRect(mx, towerTopY - merlonH, mW, merlonH);
+      ctx.strokeRect(mx + 0.5, towerTopY - merlonH + 0.5, mW - 1, merlonH - 1);
+    }
+    // 작은 창문 (어두운 점)
+    ctx.fillStyle = stoneSh;
+    ctx.fillRect(left + towerW * 0.4, towerTopY + towerH * 0.45, towerW * 0.22, towerH * 0.14);
+  };
+
+  drawTower(cx - r * 0.92);
+  drawTower(cx + r * 0.92 - towerW);
+
+  // 중앙 성벽 (망루보다 짧음)
+  const wallX = cx - r * 0.55;
+  const wallW = r * 1.10;
+  const wallY = cy - r * 0.42;
+  const wallH = r * 1.30;
+  ctx.fillStyle = stone;
+  ctx.fillRect(wallX, wallY, wallW, wallH);
+  ctx.fillStyle = stoneHi;
+  ctx.fillRect(wallX, wallY, wallW * 0.28, wallH);
+  ctx.strokeRect(wallX + 0.5, wallY + 0.5, wallW - 1, wallH - 1);
+  // 중앙 흉벽 4개
+  const wMW = wallW / 7;
+  ctx.fillStyle = stone;
+  for (let i = 0; i < 4; i++) {
+    const mx = wallX + wMW * (i * 2 + 0.5);
+    ctx.fillRect(mx, wallY - merlonH, wMW, merlonH);
+    ctx.strokeRect(mx + 0.5, wallY - merlonH + 0.5, wMW - 1, merlonH - 1);
+  }
+
+  // 정문 (아치)
+  const gateW = r * 0.46;
+  const gateH = r * 0.62;
+  const gateX = cx - gateW / 2;
+  const gateBaseY = cy + r * 0.85;
+  const gateArcCY = gateBaseY - gateH + gateW / 2;
+  ctx.fillStyle = '#0e0a06';
+  ctx.beginPath();
+  ctx.moveTo(gateX, gateBaseY);
+  ctx.lineTo(gateX, gateArcCY);
+  ctx.arc(cx, gateArcCY, gateW / 2, Math.PI, 0, false);
+  ctx.lineTo(gateX + gateW, gateBaseY);
+  ctx.closePath();
+  ctx.fill();
+  // 정문 가운데 세로 빔 (양문 분리감)
+  ctx.strokeStyle = '#3a2614';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(cx, gateArcCY);
+  ctx.lineTo(cx, gateBaseY);
+  ctx.stroke();
+
+  // 깃대 + 깃발 (중앙 흉벽 위로)
+  const flagBaseY = wallY - merlonH;
+  const poleH = r * 0.60;
+  const poleTopY = flagBaseY - poleH;
+  ctx.strokeStyle = '#2a1f14';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(cx, flagBaseY);
+  ctx.lineTo(cx, poleTopY);
+  ctx.stroke();
+  // 깃발 (오른쪽으로 휘날리는 삼각형)
+  ctx.fillStyle = flagRed;
+  ctx.beginPath();
+  ctx.moveTo(cx + 0.5, poleTopY + 1);
+  ctx.lineTo(cx + r * 0.42, poleTopY + r * 0.13);
+  ctx.lineTo(cx + 0.5, poleTopY + r * 0.26);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = flagShd;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  // 깃봉 (금색 점)
+  ctx.fillStyle = gold;
+  ctx.beginPath();
+  ctx.arc(cx, poleTopY - 0.5, 1.8, 0, Math.PI * 2);
+  ctx.fill();
+};
+
 Game.draw = function(state, ctx) {
   const W = state.W, H = state.H, castle = state.castle;
   ctx.clearRect(0, 0, W, H);
@@ -162,20 +279,8 @@ Game.draw = function(state, ctx) {
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  // 성
-  ctx.fillStyle = '#4a90e2';
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(castle.x, castle.y, castle.r, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(castle.x - 10, castle.y);
-  ctx.lineTo(castle.x + 10, castle.y);
-  ctx.moveTo(castle.x, castle.y - 10);
-  ctx.lineTo(castle.x, castle.y + 10);
-  ctx.stroke();
+  // 성 (중세 성 실루엣)
+  Game.drawCastle(ctx, castle.x, castle.y, castle.r);
 
   // 영웅 (사거리 + 본체)
   if (state.heroes) {

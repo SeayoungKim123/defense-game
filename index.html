@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>성 방어 게임</title>
+<title>성 지키기</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +22,7 @@
 </div>
 
 <div id="status-panel">
-  <div class="status-title">성 상태</div>
+  <div class="status-title">⚜ 성주의 보고</div>
   <div class="status-row"><span>🗡 공격력</span><span id="st-atk">10</span></div>
   <div class="status-row"><span>⚡ 공속</span><span id="st-aspd">1.0/s</span></div>
   <div class="status-row"><span>🏹 사거리</span><span id="st-range">200</span></div>
@@ -33,21 +33,21 @@
   <div class="status-row total"><span>⚔️ DPS</span><span id="st-dps">10</span></div>
 
   <div id="heroes-section" style="display:none;">
-    <div class="status-title" style="margin-top:12px;">영웅</div>
+    <div class="status-title" style="margin-top:12px;">⚔ 기사단</div>
     <div id="heroes-list"></div>
   </div>
 </div>
 
 <div id="overlay">
-  <h1>GAME OVER</h1>
+  <h1>성이 함락되었다</h1>
   <p>최종 레벨: <span id="final-level">1</span></p>
   <p>최종 점수: <span id="final-score">0</span></p>
-  <p>생존 시간: <span id="final-time">0</span>초</p>
-  <button id="restart">다시 시작</button>
+  <p>버틴 시간: <span id="final-time">0</span>초</p>
+  <button id="restart">다시 지킨다</button>
 </div>
 
 <div id="card-overlay">
-  <h2>LEVEL UP!</h2>
+  <h2>성이 강해진다</h2>
   <div id="cards"></div>
 </div>
 
