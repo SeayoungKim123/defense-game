@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>성 방어 게임</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div id="hp-wrap">
+    <span>HP</span>
+    <div id="hp-bar"><div id="hp-fill" style="width:100%"></div></div>
+    <span id="hp-text">100 / 100</span>
+  </div>
+  <div id="stats">
+    <div><span id="level-badge">Lv. 1</span> · 점수: <span id="score">0</span> / <span id="next-th">100</span></div>
+    <div>시간: <span id="time">0</span>s</div>
+  </div>
+</div>
+
+<div id="status-panel">
+  <div class="status-title">성 상태</div>
+  <div class="status-row"><span>🗡 공격력</span><span id="st-atk">10</span></div>
+  <div class="status-row"><span>⚡ 공속</span><span id="st-aspd">1.0/s</span></div>
+  <div class="status-row"><span>🏹 사거리</span><span id="st-range">200</span></div>
+  <div class="status-row"><span>🎯 동시 발사</span><span id="st-multi">1</span></div>
+  <div class="status-row"><span>💥 데미지 배율</span><span id="st-dmgmul">×1.00</span></div>
+  <div class="status-row"><span>🌱 재생</span><span id="st-regen">0/s</span></div>
+  <div class="status-row"><span>🛡 가시 반사</span><span id="st-thorns">0%</span></div>
+  <div class="status-row total"><span>⚔️ DPS</span><span id="st-dps">10</span></div>
+
+  <div id="heroes-section" style="display:none;">
+    <div class="status-title" style="margin-top:12px;">영웅</div>
+    <div id="heroes-list"></div>
+  </div>
+</div>
+
+<div id="overlay">
+  <h1>GAME OVER</h1>
+  <p>최종 레벨: <span id="final-level">1</span></p>
+  <p>최종 점수: <span id="final-score">0</span></p>
+  <p>생존 시간: <span id="final-time">0</span>초</p>
+  <button id="restart">다시 시작</button>
+</div>
+
+<div id="card-overlay">
+  <h2>LEVEL UP!</h2>
+  <div id="cards"></div>
+</div>
+
+<!-- 의존성 순서대로 로드 -->
+<script src="js/config.js"></script>
+<script src="js/heroes.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
